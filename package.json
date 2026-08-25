@@ -1,0 +1,10 @@
+{
+  "name": "pr-practice",
+  "version": "1.0.0",
+  "description": "A tiny math utilities library, used as a sandbox for practicing the GitHub pull request workflow.",
+  "main": "mathUtils.js",
+  "scripts": {
+    "test": "node mathUtils.test.js"
+  },
+  "license": "MIT"
+}
