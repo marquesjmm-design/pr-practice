@@ -2,7 +2,7 @@
 
 A tiny math utilities library, used as a sandbox for practicing the GitHub pull request workflow.
 
-## Instalation
+## Installation
 
 ```bash
 npm install
