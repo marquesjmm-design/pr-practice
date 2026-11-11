@@ -20,6 +20,14 @@ jobs:
     defaults:
       run:
         working-directory: fuel-hq
+    env:
+      # Versão crescente a cada compilação, para o Android aceitar instalar por cima.
+      HQ_VERSION_CODE: ${{ github.run_number }}
+      HQ_VERSION_NAME: 0.2.${{ github.run_number }}
+      # A chave de assinatura fica no segredo HQ_POSTOS_KEYSTORE (keystore em base64).
+      # A palavra-passe e o alias não são secretos: sem o ficheiro da chave não servem de nada.
+      HQ_KEY_ALIAS: hqpostos
+      HQ_KEYSTORE_PASSWORD: hqpostos-teste
     steps:
       - uses: actions/checkout@v4
 
@@ -49,6 +57,20 @@ jobs:
           yes | "$SDK/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
           "$SDK/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36"
 
+      - name: Chave de assinatura
+        env:
+          HQ_KEYSTORE_B64: ${{ secrets.HQ_POSTOS_KEYSTORE }}
+        run: |
+          if [ -n "$HQ_KEYSTORE_B64" ]; then
+            printf '%s' "$HQ_KEYSTORE_B64" | tr -d ' \r\n' | base64 -d > "$RUNNER_TEMP/hq-postos.jks"
+            echo "HQ_KEYSTORE_PATH=$RUNNER_TEMP/hq-postos.jks" >> "$GITHUB_ENV"
+            echo "HQ_SIGNED=1" >> "$GITHUB_ENV"
+            echo "Chave fixa carregada do segredo HQ_POSTOS_KEYSTORE."
+          else
+            echo "HQ_SIGNED=0" >> "$GITHUB_ENV"
+            echo "::warning title=Sem chave fixa::O segredo HQ_POSTOS_KEYSTORE não está definido. Este APK usa uma chave temporária e NÃO se instala por cima de outras versões."
+          fi
+
       - name: Sincronizar Capacitor
         run: npx cap sync android
 
@@ -56,8 +78,42 @@ jobs:
         working-directory: fuel-hq/android
         run: ./gradlew assembleDebug --no-daemon --stacktrace
 
+      - name: Verificar assinatura e preparar ficheiro
+        run: |
+          SDK="${ANDROID_SDK_ROOT:-$ANDROID_HOME}"
+          APKSIGNER="$(ls -d "$SDK"/build-tools/*/ | sort -V | tail -1)apksigner"
+          APK=android/app/build/outputs/apk/debug/app-debug.apk
+          CERT="$("$APKSIGNER" verify --print-certs "$APK" | sed -n 's/^Signer #1 certificate SHA-256 digest: //p')"
+          EXPECTED="$(tr -d ' \r\n' < android/signing-cert-sha256.txt)"
+          echo "Versão: $HQ_VERSION_NAME (versionCode $HQ_VERSION_CODE)"
+          echo "Certificado SHA-256: $CERT"
+          mkdir -p "$RUNNER_TEMP/out"
+          if [ "$HQ_SIGNED" = "1" ]; then
+            if [ "$CERT" != "$EXPECTED" ]; then
+              echo "::error::O APK foi assinado com uma chave diferente da esperada ($EXPECTED). Verifique o segredo HQ_POSTOS_KEYSTORE."
+              exit 1
+            fi
+            NAME="hq-postos-$HQ_VERSION_NAME.apk"
+            echo "HQ_ARTIFACT=hq-postos-apk" >> "$GITHUB_ENV"
+          else
+            NAME="hq-postos-$HQ_VERSION_NAME-chave-temporaria.apk"
+            echo "HQ_ARTIFACT=hq-postos-apk-chave-temporaria" >> "$GITHUB_ENV"
+          fi
+          cp "$APK" "$RUNNER_TEMP/out/$NAME"
+          {
+            echo "### HQ Postos $HQ_VERSION_NAME"
+            echo ""
+            echo "- Ficheiro: \`$NAME\`"
+            echo "- Certificado SHA-256: \`$CERT\`"
+            if [ "$HQ_SIGNED" = "1" ]; then
+              echo "- Assinado com a chave fixa: instala por cima das versões anteriores assinadas com a mesma chave."
+            else
+              echo "- **Chave temporária**: defina o segredo \`HQ_POSTOS_KEYSTORE\` para as atualizações instalarem por cima."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - uses: actions/upload-artifact@v4
         with:
-          name: hq-postos-debug-apk
-          path: fuel-hq/android/app/build/outputs/apk/debug/*.apk
+          name: ${{ env.HQ_ARTIFACT }}
+          path: ${{ runner.temp }}/out/*.apk
           if-no-files-found: error
