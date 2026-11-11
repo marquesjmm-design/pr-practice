@@ -1,0 +1,4 @@
+{
+  "_instrucoes": "Coloque nesta pasta as imagens oficiais dos equipamentos (fornecidas pela Petrotec ou com autorização de uso) e associe cada ficheiro ao id do modelo. Ids disponíveis: p5000-lh, p5000-hh, p1000r, progress-lpg, euro2000-vi. Exemplo: \"p5000-lh\": \"p5000-lh.jpg\"",
+  "images": {}
+}
