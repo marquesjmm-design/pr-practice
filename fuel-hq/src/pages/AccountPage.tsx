@@ -1,4 +1,5 @@
 import { useApp } from "../AppContext";
+import { confirmAction } from "../components/Confirm";
 import { Icon } from "../components/Icon";
 import { REGIONS } from "../data/catalog";
 import { formatDayPt } from "../lib/dates";
@@ -9,8 +10,9 @@ const ROLE_LABEL = { admin: "Administrador", regional: "Gestor regional", consul
 export function AccountPage() {
   const { user, logout, ds, scopeRegions } = useApp();
   const { mode, setMode } = useTheme();
-  const clearLocal = () => {
-    if (!window.confirm("Apagar painéis personalizados, imagens e ficheiros importados guardados neste dispositivo?")) return;
+  const clearLocal = async () => {
+    const ok = await confirmAction({ title: "Apagar dados locais", message: "Apaga os painéis personalizados, as imagens e os ficheiros importados guardados neste dispositivo. A sessão mantém-se.", confirmLabel: "Apagar", danger: true });
+    if (!ok) return;
     try {
       Object.keys(localStorage).filter((k) => k.startsWith("hqpostos:v1:") && !k.endsWith(":session")).forEach((k) => localStorage.removeItem(k));
     } catch {

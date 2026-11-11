@@ -51,14 +51,22 @@ interface ThemeCtx {
 
 const Ctx = createContext<ThemeCtx | null>(null);
 
+// Só removemos o atributo data-theme que a própria app colocou (o anfitrião pode ter definido o seu).
+let appliedByApp: string | null = null;
+
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [mode, setModeState] = useState<ThemeMode>(() => load<ThemeMode>("theme", "auto"));
   const [tick, setTick] = useState(0);
 
   useEffect(() => {
     const root = document.documentElement;
-    if (mode === "auto") root.removeAttribute("data-theme");
-    else root.setAttribute("data-theme", mode);
+    if (mode === "auto") {
+      if (appliedByApp && root.getAttribute("data-theme") === appliedByApp) root.removeAttribute("data-theme");
+      appliedByApp = null;
+    } else {
+      root.setAttribute("data-theme", mode);
+      appliedByApp = mode;
+    }
     const meta = document.querySelector('meta[name="theme-color"]');
     setTick((t) => t + 1);
     requestAnimationFrame(() => meta?.setAttribute("content", getComputedStyle(root).getPropertyValue("--page").trim() || "#f9f9f7"));

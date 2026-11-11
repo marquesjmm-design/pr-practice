@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { Responsive, useContainerWidth, type Layout, type ResponsiveLayouts } from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import { useApp } from "../AppContext";
+import { confirmAction } from "../components/Confirm";
 import { Icon } from "../components/Icon";
 import { Sheet } from "../components/Sheet";
 import { useCustomDatasets } from "../data/customStore";
@@ -154,7 +155,7 @@ export function DashboardPage() {
                     onExpand={() => setExpanded(w)}
                     onDuplicate={() => store.duplicateWidget(w.id)}
                     onRemove={() => {
-                      if (window.confirm(`Remover «${w.title}» do painel?`)) store.removeWidget(w.id);
+                      confirmAction({ title: "Remover gráfico", message: `Remover «${w.title}» deste painel?`, confirmLabel: "Remover", danger: true }).then((ok) => ok && store.removeWidget(w.id));
                     }}
                   />
                 </div>
@@ -307,10 +308,10 @@ function DashboardMenu({ store, canEdit, onClose }: { store: ReturnType<typeof u
             <button className="btn" disabled={!name.trim() || name === store.active.name} onClick={() => store.renameDashboard(name.trim())}>Renomear</button>
           </div>
           <div className="row wrap">
-            <button className="btn danger" disabled={store.state.dashboards.length <= 1} onClick={() => { if (window.confirm(`Eliminar o painel «${store.active.name}»?`)) { store.deleteDashboard(); onClose(); } }}>
+            <button className="btn danger" disabled={store.state.dashboards.length <= 1} onClick={() => confirmAction({ title: "Eliminar painel", message: `Eliminar o painel «${store.active.name}» e os seus gráficos?`, confirmLabel: "Eliminar", danger: true }).then((ok) => { if (ok) { store.deleteDashboard(); onClose(); } })}>
               <Icon name="trash" size={18} /> Eliminar painel
             </button>
-            <button className="btn" onClick={() => { if (window.confirm("Repor os painéis predefinidos? Perde as alterações feitas.")) { store.resetAll(); onClose(); } }}>
+            <button className="btn" onClick={() => confirmAction({ title: "Repor painéis predefinidos", message: "Os seus painéis e gráficos personalizados são substituídos pelos predefinidos.", confirmLabel: "Repor", danger: true }).then((ok) => { if (ok) { store.resetAll(); onClose(); } })}>
               <Icon name="refresh" size={18} /> Repor predefinidos
             </button>
           </div>

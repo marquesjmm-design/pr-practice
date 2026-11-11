@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 import { useApp } from "../AppContext";
+import { confirmAction } from "../components/Confirm";
 import { Icon } from "../components/Icon";
 import { buildDataset, MAX_CSV_BYTES, type CustomDataset } from "../data/csv";
 import { customStore, useCustomDatasets } from "../data/customStore";
@@ -88,7 +89,7 @@ function DatasetCard({ d, canEdit }: { d: CustomDataset; canEdit: boolean }) {
           <b>{d.name}</b>
           <div className="tiny muted">{d.rows.length} linhas · {d.source} · importado {d.createdAt.slice(0, 10).split("-").reverse().join("/")}</div>
         </div>
-        {canEdit && <button className="iconbtn" aria-label={`Eliminar ${d.name}`} onClick={() => window.confirm(`Eliminar «${d.name}»? Os gráficos que o usam ficam sem dados.`) && customStore.remove(d.id)}><Icon name="trash" size={18} /></button>}
+        {canEdit && <button className="iconbtn" aria-label={`Eliminar ${d.name}`} onClick={() => confirmAction({ title: "Eliminar conjunto de dados", message: `Eliminar «${d.name}»? Os gráficos que o usam ficam sem dados.`, confirmLabel: "Eliminar", danger: true }).then((ok) => ok && customStore.remove(d.id))}><Icon name="trash" size={18} /></button>}
       </div>
       <div className="chips wrap">
         {d.columns.map((c) => <span key={c.name} className="badge">{c.name} · {c.type === "date" ? "data" : c.type === "number" ? "número" : "texto"}</span>)}

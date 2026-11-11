@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { AppContext } from "./AppContext";
 import { authService, type Session } from "./auth/authService";
+import { ConfirmHost } from "./components/Confirm";
 import { Icon } from "./components/Icon";
 import { DashboardPage } from "./dashboard/DashboardPage";
 import { simulate } from "./data/simulate";
@@ -86,6 +87,7 @@ export function App() {
             </a>
           ))}
         </nav>
+        <ConfirmHost />
       </div>
     </AppContext.Provider>
   );
