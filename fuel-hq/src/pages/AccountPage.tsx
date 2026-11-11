@@ -48,7 +48,7 @@ export function AccountPage() {
 
         <section className="card pad stack">
           <h2>Sobre</h2>
-          <div className="small ink2">HQ Postos 0.1.0 · dados operacionais simulados até {formatDayPt(ds.lastDay)}.</div>
+          <div className="small ink2">HQ Postos, versão {__APP_VERSION__} · dados operacionais simulados até {formatDayPt(ds.lastDay)}.</div>
           <button className="btn danger" onClick={clearLocal}><Icon name="trash" size={18} /> Apagar dados locais</button>
         </section>
 

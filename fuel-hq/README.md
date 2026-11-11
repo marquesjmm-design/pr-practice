@@ -48,9 +48,37 @@ Contas de demonstração (também aparecem no ecrã de login):
 
 ## Gerar a app Android (APK)
 
-**Pelo GitHub Actions:** o workflow [`.github/workflows/fuel-hq-android.yml`](../.github/workflows/fuel-hq-android.yml) corre os testes, faz o build e gera `app-debug.apk`, disponível como *artifact* «hq-postos-debug-apk» na execução do workflow. Instale-o no telemóvel (é preciso permitir a instalação de apps de origem desconhecida).
+**Pelo GitHub Actions:** o workflow [`.github/workflows/fuel-hq-android.yml`](../.github/workflows/fuel-hq-android.yml) corre os testes, faz o build e gera o APK, disponível em «Artifacts» na página de cada execução:
 
-**No seu computador:** precisa de JDK 21 e do Android SDK (plataforma 36), por exemplo via Android Studio.
+- `hq-postos-apk` → `hq-postos-0.2.N.apk`, assinado com a **chave fixa** da app. Cada nova versão instala-se por cima da anterior e mantém os painéis e imagens guardados no telemóvel.
+- `hq-postos-apk-chave-temporaria` → só aparece se o segredo da chave não estiver configurado; esse APK **não** se instala por cima de outras versões.
+
+O número da versão (`0.2.N`) aumenta a cada compilação e aparece na app em **Conta → Sobre**.
+
+### Instalar e atualizar no telemóvel
+
+1. No telemóvel, com sessão iniciada no GitHub, abra a execução mais recente do workflow, desça até «Artifacts» e descarregue `hq-postos-apk` (um `.zip`).
+2. Extraia o `.zip` (app «Ficheiros») e toque no `hq-postos-0.2.N.apk`.
+3. Na primeira vez, autorize a instalação desta origem e, se o Play Protect avisar, escolha «Instalar mesmo assim».
+4. Para atualizar, repita os passos com uma versão mais recente: o Android mostra «Atualizar» e mantém os dados.
+
+Se tinha instalado uma versão anterior a esta configuração (ficheiro `app-debug.apk`), desinstale-a uma vez: foi assinada com outra chave.
+
+### Chave de assinatura (segredo do GitHub)
+
+A chave **não** está no repositório (que é público). Está no segredo `HQ_POSTOS_KEYSTORE` do repositório, em base64:
+
+1. GitHub → repositório → **Settings → Secrets and variables → Actions → New repository secret**.
+2. Nome: `HQ_POSTOS_KEYSTORE`. Valor: o conteúdo do ficheiro `HQ_POSTOS_KEYSTORE.txt` entregue com esta configuração.
+3. Guarde uma cópia desse ficheiro num local seguro (por exemplo, um gestor de palavras-passe). Se a chave se perder, as versões novas deixam de se instalar por cima e é preciso desinstalar e reinstalar.
+
+O workflow confirma que o APK foi assinado com a chave certa, comparando o certificado com [`android/signing-cert-sha256.txt`](android/signing-cert-sha256.txt) (dado público). Para trocar de chave, gere uma nova (`keytool -genkeypair -storetype PKCS12 -alias hqpostos -storepass hqpostos-teste -keypass hqpostos-teste …`), atualize o segredo e esse ficheiro. A palavra-passe e o alias estão no workflow e não são secretos: sem o ficheiro da chave não permitem assinar.
+
+Esta é uma chave de **teste** para distribuição interna. Para publicar na Google Play é preciso um build *release* com a chave de publicação da empresa (não incluído).
+
+### Compilar no computador
+
+Precisa de JDK 21 e do Android SDK (plataforma 36), por exemplo via Android Studio. Sem as variáveis do CI, o APK local usa a chave de debug do computador e a versão 0.1.0.
 
 ```bash
 cd fuel-hq
@@ -59,8 +87,6 @@ npx cap open android          # abre no Android Studio (Run ▶ para um telemóv
 # ou, só por linha de comandos:
 cd android && ./gradlew assembleDebug   # APK em android/app/build/outputs/apk/debug/
 ```
-
-Para publicar na Google Play é preciso um build *release* assinado com a chave da empresa (não incluído).
 
 A app é construída com **Capacitor** (React + TypeScript dentro de um WebView nativo). Não foi possível compilar o APK no ambiente onde o código foi escrito (o SDK Android não estava acessível); a compilação é feita e verificada pelo workflow de CI.
 
