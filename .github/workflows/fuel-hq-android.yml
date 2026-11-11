@@ -1,0 +1,63 @@
+name: HQ Postos (Android)
+
+on:
+  push:
+    paths:
+      - "fuel-hq/**"
+      - ".github/workflows/fuel-hq-android.yml"
+  pull_request:
+    paths:
+      - "fuel-hq/**"
+      - ".github/workflows/fuel-hq-android.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: fuel-hq
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: fuel-hq/package-lock.json
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Testes unitários
+        run: npm test
+
+      - name: Build web (tipos + Vite)
+        run: npm run build
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Plataforma Android SDK
+        run: |
+          SDK="${ANDROID_SDK_ROOT:-$ANDROID_HOME}"
+          yes | "$SDK/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
+          "$SDK/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36"
+
+      - name: Sincronizar Capacitor
+        run: npx cap sync android
+
+      - name: Compilar APK (debug)
+        working-directory: fuel-hq/android
+        run: ./gradlew assembleDebug --no-daemon --stacktrace
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hq-postos-debug-apk
+          path: fuel-hq/android/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error

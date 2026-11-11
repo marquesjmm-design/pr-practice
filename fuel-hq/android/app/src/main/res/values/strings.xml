@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">HQ Postos</string>
+    <string name="title_activity_main">HQ Postos</string>
+    <string name="package_name">pt.headoffice.postos</string>
+    <string name="custom_url_scheme">pt.headoffice.postos</string>
+</resources>
