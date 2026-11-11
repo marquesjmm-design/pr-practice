@@ -83,7 +83,15 @@ jobs:
           SDK="${ANDROID_SDK_ROOT:-$ANDROID_HOME}"
           APKSIGNER="$(ls -d "$SDK"/build-tools/*/ | sort -V | tail -1)apksigner"
           APK=android/app/build/outputs/apk/debug/app-debug.apk
-          CERT="$("$APKSIGNER" verify --print-certs "$APK" | sed -n 's/^Signer #1 certificate SHA-256 digest: //p')"
+          echo "apksigner: $APKSIGNER"
+          # O certificado é público; mostra-se a saída completa para diagnóstico.
+          SIGNERS="$("$APKSIGNER" verify --print-certs "$APK" 2>&1)" || { echo "$SIGNERS"; echo "::error::apksigner não conseguiu verificar o APK."; exit 1; }
+          echo "$SIGNERS"
+          CERT="$(printf '%s\n' "$SIGNERS" | grep -i 'certificate SHA-256 digest' | head -1 | sed 's/.*: *//' | tr -d ' :\r' | tr 'A-F' 'a-f')"
+          if [ -z "$CERT" ]; then
+            echo "::error::Não foi possível ler o certificado SHA-256 do APK."
+            exit 1
+          fi
           EXPECTED="$(tr -d ' \r\n' < android/signing-cert-sha256.txt)"
           echo "Versão: $HQ_VERSION_NAME (versionCode $HQ_VERSION_CODE)"
           echo "Certificado SHA-256: $CERT"
