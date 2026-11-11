@@ -1,5 +1,5 @@
 {
-  "_instrucoes": "Imagens oficiais dos equipamentos, associadas ao id do modelo (axon-5000, axon-4000, axon-2000, axon-1000, axon-lpg, p5000-lh, p5000-hh, p1000r, progress-lpg, euro2000-vi). Para acrescentar ou trocar uma imagem, coloque o ficheiro nesta pasta e registe-o em 'images'. 'captions' é opcional.",
+  "_instrucoes": "Imagens oficiais dos equipamentos, associadas ao id do modelo (axon-5000, axon-4000, axon-2000, axon-1000, axon-lpg, p5000-lh, p5000-hh, p4000, p3000, p2000, p1000r, progress-lpg, euro2000-vi). Para acrescentar ou trocar uma imagem, coloque o ficheiro nesta pasta e registe-o em 'images'. 'captions' é opcional.",
   "source": "Imagens de produto de https://www.petrotec.com (página de dispensadores), descarregadas a 11/11/2026, usadas com autorização da empresa.",
   "images": {
     "axon-5000": "axon-5000.webp",
@@ -9,6 +9,9 @@
     "axon-lpg": "axon-lpg.webp",
     "p5000-lh": "p5000-lh.webp",
     "p5000-hh": "p5000-hh.webp",
+    "p4000": "p4000.webp",
+    "p3000": "p3000.webp",
+    "p2000": "p2000.webp",
     "p1000r": "p1000r.webp",
     "progress-lpg": "progress-lpg.webp"
   },

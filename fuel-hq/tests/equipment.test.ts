@@ -16,11 +16,13 @@ describe("equipamentos", () => {
     }
   });
 
-  it("a gama Axon está instalada nos postos remodelados", () => {
+  it("a gama Axon e os Progress P2000/P3000/P4000 estão instalados nos postos previstos", () => {
     const models = (st: string) => new Set(ds.dispensers.filter((d) => d.stationId === st).map((d) => d.modelId));
     expect([...models("portimao")].sort()).toEqual(["axon-4000", "axon-5000", "axon-lpg"]);
     expect([...models("oeiras")].sort()).toEqual(["axon-2000", "axon-5000"]);
     expect([...models("faro")].sort()).toEqual(["axon-1000", "axon-2000"]);
+    expect([...models("braga")].sort()).toEqual(["p3000", "p4000"]);
+    expect([...models("coimbra")].sort()).toEqual(["p2000", "p5000-lh"]);
     expect(ds.dispensers.filter((d) => d.modelId.startsWith("axon")).every((d) => d.installedOn >= "2024")).toBe(true);
   });
 

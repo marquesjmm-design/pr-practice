@@ -86,31 +86,34 @@ const INCIDENT_KINDS = [
   "Calibração fora de tolerância",
 ];
 
-/** Postos remodelados recentemente com a gama Axon (pressuposto da simulação). */
-const AXON_PLAN: Partial<Record<string, (i: number) => string>> = {
+/** Postos com equipamento específico (pressuposto da simulação): remodelações com a gama Axon e Progress P2000/P3000/P4000. */
+const STATION_PLAN: Partial<Record<string, (i: number) => string>> = {
   portimao: (i) => (i < 2 ? "axon-4000" : "axon-5000"),
   oeiras: (i) => (i < 2 ? "axon-5000" : "axon-2000"),
   faro: (i) => (i < 2 ? "axon-2000" : "axon-1000"),
+  braga: (i) => (i < 2 ? "p4000" : "p3000"),
+  coimbra: (i) => (i < 2 ? "p5000-lh" : "p2000"),
 };
 
 function dispenserPlan(st: Station): string[] {
   const n = st.type === "autoestrada" ? 6 : st.baseDailyL >= 9000 ? 5 : st.baseDailyL >= 6000 ? 4 : 3;
   const legacy = ["guimaraes", "setubal", "evora"].includes(st.id);
-  const axon = AXON_PLAN[st.id];
+  const plan = STATION_PLAN[st.id];
   const models: string[] = [];
   for (let i = 0; i < n; i++) {
-    if (axon) models.push(axon(i));
+    if (plan) models.push(plan(i));
     else if (st.type === "autoestrada") models.push(i < 2 ? "p5000-hh" : "p5000-lh");
     else if (legacy) models.push(i === 0 ? "p5000-lh" : "euro2000-vi");
     else if (st.baseDailyL < 7000) models.push(i < 2 ? "p5000-lh" : "p1000r");
     else models.push("p5000-lh");
   }
-  if (st.tanks.some((t) => t.product === "gpl")) models.push(axon ? "axon-lpg" : "progress-lpg");
+  if (st.tanks.some((t) => t.product === "gpl")) models.push(plan?.(0).startsWith("axon") ? "axon-lpg" : "progress-lpg");
   return models;
 }
 
 const FAILURE_RATE: Record<string, number> = {
   "p5000-lh": 1 / 70, "p5000-hh": 1 / 65, p1000r: 1 / 50, "progress-lpg": 1 / 45, "euro2000-vi": 1 / 25,
+  p4000: 1 / 70, p3000: 1 / 65, p2000: 1 / 60,
   "axon-5000": 1 / 90, "axon-4000": 1 / 90, "axon-2000": 1 / 85, "axon-1000": 1 / 80, "axon-lpg": 1 / 60,
 };
 
