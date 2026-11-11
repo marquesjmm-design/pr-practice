@@ -34,20 +34,34 @@ export const equipmentImages = {
   },
 };
 
-let manifestPromise: Promise<Record<string, string>> | null = null;
-function loadManifest(): Promise<Record<string, string>> {
+interface Manifest {
+  images: Record<string, string>;
+  captions: Record<string, string>;
+  source?: string;
+}
+const EMPTY: Manifest = { images: {}, captions: {} };
+
+let manifestPromise: Promise<Manifest> | null = null;
+function loadManifest(): Promise<Manifest> {
   if (!manifestPromise) {
     manifestPromise = fetch("./equipment/manifest.json", { cache: "no-cache" })
-      .then((r) => (r.ok ? r.json() : {}))
-      .then((j: { images?: Record<string, string> } | null) => (j && typeof j === "object" && j.images ? j.images : {}))
-      .catch(() => ({}));
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j: Partial<Manifest> | null) => (j && typeof j === "object" ? { images: j.images ?? {}, captions: j.captions ?? {}, source: j.source } : EMPTY))
+      .catch(() => EMPTY);
   }
   return manifestPromise;
 }
 
-export function useEquipmentImage(modelId: string): { src: string | null; origin: "utilizador" | "oficial" | "ilustração" } {
+export interface EquipmentImage {
+  src: string | null;
+  origin: "utilizador" | "oficial" | "ilustração";
+  caption?: string;
+  source?: string;
+}
+
+export function useEquipmentImage(modelId: string): EquipmentImage {
   const user = useSyncExternalStore(equipmentImages.subscribe, equipmentImages.get, equipmentImages.get);
-  const [manifest, setManifest] = useState<Record<string, string>>({});
+  const [manifest, setManifest] = useState<Manifest>(EMPTY);
   useEffect(() => {
     let alive = true;
     loadManifest().then((m) => alive && setManifest(m));
@@ -56,7 +70,7 @@ export function useEquipmentImage(modelId: string): { src: string | null; origin
     };
   }, []);
   if (user[modelId]) return { src: user[modelId], origin: "utilizador" };
-  if (manifest[modelId]) return { src: `./equipment/${manifest[modelId]}`, origin: "oficial" };
+  if (manifest.images[modelId]) return { src: `./equipment/${manifest.images[modelId]}`, origin: "oficial", caption: manifest.captions[modelId], source: manifest.source };
   return { src: null, origin: "ilustração" };
 }
 

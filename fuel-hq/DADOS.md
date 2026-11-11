@@ -73,16 +73,18 @@ Cenários incluídos de propósito para os gráficos terem algo para encontrar:
 
 ## 4. Equipamentos Petrotec
 
-Modelos em `src/data/catalog.ts`. Só foram incluídas afirmações encontradas em fontes públicas:
+Modelos em `src/data/catalog.ts`. As características foram retiradas das páginas oficiais da Petrotec, consultadas a 11/11/2026:
 
 | Modelo | Informação usada | Fonte |
 |---|---|---|
-| Progress 5000 LH | até 5 produtos e 10 mangueiras; compatível com multimédia e OPT tátil | https://www.petrotec.com/products/p5000-lh |
-| Progress 5000 HH | mangueira suspensa; até 4 produtos, 8 mangueiras, 130 L/min | https://www.petrotec.eu/products-and-services/dispensers/retail-line/p5000-hh.aspx |
-| Progress 1000 R | modelo de entrada da gama Progress | pesquisa web — **sem fonte primária verificada** |
-| Progress LPG | dispensador de GPL da gama Progress | https://www.petrotec.com/products/progress-lpg |
-| EURO 2000 VI | até 4 produtos e 8 mangueiras | certificado UK-2780 (gov.uk): https://assets.publishing.service.gov.uk/media/5a7c141940f0b61a825d6506/UK-2780-revision-3.pdf |
+| Progress 5000 LH | até 5 grelhas de combustível e 10 mangueiras; até 130 L/min; combinável com GPL e AdBlue (com aquecimento); retração elástica da mangueira; todas as opções multimédia/pagamento | https://www.petrotec.com/products/p5000-lh |
+| Progress 5000 HH | versão de mangueira suspensa; até 4 grelhas, 8 mangueiras e 130 L/min (a mesma página também refere «até 5 grelhas e 10 mangueiras»: **inconsistência no site, confirmar com a Petrotec**) | https://www.petrotec.com/products/p5000-hh |
+| Progress 1000 Retail (P1000 R) | modelo de entrada da gama Progress para retalho; 1 grelha, 1 ou 2 mangueiras; até 130 L/min; mangueira normal ou braço aéreo | https://www.petrotec.com/products/p1000-r |
+| Progress LPG | gama de GPL (Progress 5000 LPG standalone e combo, Progress 2000 LPG, Progress 1500 LPG); 1 ou 2 mangueiras; até 60 L/min | https://www.petrotec.com/products/progress-lpg |
+| EURO 2000 VI | até 4 produtos e 8 mangueiras (geração anterior, não listada no site atual) | certificado UK-2780 (gov.uk): https://assets.publishing.service.gov.uk/media/5a7c141940f0b61a825d6506/UK-2780-revision-3.pdf |
+
+O site da Petrotec lista ainda outros dispensadores que **não** estão no catálogo da app (gama Axon 1000/2000/4000/5000 e Axon LPG; Progress P1000, P1500, P2000, P3000, P4000; Progress AdBlue; Eurotank AdBlue III). Podem ser acrescentados se fizerem parte do parque da empresa.
 
 Números de série (prefixo `DEMO-`), datas de instalação, totalizadores, estados e ocorrências são **simulados**.
 
-**Imagens:** a app não inclui fotografias da Petrotec (não foi possível descarregá-las neste ambiente e são material com direitos de autor). Mostra ilustrações genéricas originais até lhe dar as imagens oficiais — ver README, secção «Imagens dos equipamentos».
+**Imagens:** imagens oficiais de produto descarregadas de petrotec.com a 11/11/2026 e usadas com autorização da empresa (ver README, secção «Imagens dos equipamentos Petrotec»). A imagem da gama Progress LPG mostra o modelo Progress 2000 LPG. O EURO 2000 VI não tem imagem oficial no site atual e mostra uma ilustração genérica.

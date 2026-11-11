@@ -23,7 +23,11 @@ function EquipmentImage({ modelId, name, large }: { modelId: string; name: strin
       )}
       {large && (
         <figcaption className="tiny muted" style={{ marginTop: 6 }}>
-          {showImg ? (img.origin === "oficial" ? "Imagem oficial (pasta equipment/ da app)." : "Imagem definida neste dispositivo.") : "Ilustração genérica — substitua pela imagem oficial do equipamento."}
+          {showImg
+            ? img.origin === "oficial"
+              ? `Imagem oficial Petrotec.${img.caption ? ` ${img.caption}` : ""}`
+              : "Imagem definida neste dispositivo."
+            : "Ilustração genérica: não há imagem oficial deste modelo no site atual da Petrotec."}
         </figcaption>
       )}
     </figure>
@@ -93,7 +97,7 @@ export function EquipmentPage({ modelId }: { modelId?: string }) {
             );
           })}
         </div>
-        <p className="tiny muted">As especificações listadas foram retiradas de fontes públicas (ver ligação em cada modelo) e devem ser confirmadas com a Petrotec. Números de série, estados e ocorrências são simulados.</p>
+        <p className="tiny muted">Imagens e características dos modelos retiradas de petrotec.com (ver ligação em cada modelo). Números de série, estados e ocorrências são simulados.</p>
       </main>
     </>
   );
@@ -161,7 +165,7 @@ function ModelDetail({ id }: { id: string }) {
               </div>
               {img.origin === "utilizador" && <button className="btn danger" onClick={() => { equipmentImages.clear(id); setMsg("Imagem removida."); }}><Icon name="trash" size={18} /> Remover imagem definida</button>}
               {msg && <div className="small ink2" role="status">{msg}</div>}
-              <p className="tiny muted" style={{ margin: 0 }}>Use apenas imagens que a empresa tenha direito a utilizar (por exemplo, fornecidas pela Petrotec). Para distribuir imagens oficiais com a app, coloque-as em <code>public/equipment/</code> e registe-as no <code>manifest.json</code>.</p>
+              <p className="tiny muted" style={{ margin: 0 }}>A imagem escolhida aqui fica só neste dispositivo e tem prioridade sobre a imagem oficial incluída na app. Para mudar a imagem para todos, troque o ficheiro em <code>public/equipment/</code> e o <code>manifest.json</code>.</p>
             </div>
           </details>
         )}

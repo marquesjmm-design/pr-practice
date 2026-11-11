@@ -56,8 +56,9 @@ export const STATIONS: Station[] = [
 ];
 
 /**
- * Catálogo de modelos Petrotec usados na rede. Só inclui afirmações que
- * encontrámos em fontes públicas; tudo o resto fica como "a confirmar".
+ * Catálogo de modelos Petrotec usados na rede. As características vêm das
+ * páginas oficiais em petrotec.com (consultadas a 11/11/2026), exceto o
+ * EURO 2000 VI, que já não está no site e usa um certificado de aprovação.
  */
 export const EQUIPMENT_MODELS: EquipmentModel[] = [
   {
@@ -65,11 +66,13 @@ export const EQUIPMENT_MODELS: EquipmentModel[] = [
     brand: "Petrotec",
     name: "Progress 5000 LH",
     family: "Progress (retalho)",
-    summary: "Dispensador mais configurável da gama Progress, compatível com soluções multimédia e OPT (terminal de pagamento exterior) com ecrã tátil.",
+    summary: "O dispensador mais personalizável da gama Progress, com sistema de retração elástica da mangueira e todas as opções de multimédia e pagamento.",
     specs: [
-      { label: "Produtos", value: "até 5" },
+      { label: "Produtos", value: "até 5 grelhas de combustível" },
       { label: "Mangueiras", value: "até 10" },
-      { label: "Pagamento", value: "compatível com OPT tátil" },
+      { label: "Caudal", value: "até 130 L/min" },
+      { label: "Combinável com", value: "GPL e AdBlue (com aquecimento)" },
+      { label: "Pagamento", value: "todas as opções multimédia/pagamento" },
     ],
     sourceUrl: "https://www.petrotec.com/products/p5000-lh",
     sourceLabel: "petrotec.com — Progress 5000 LH",
@@ -80,32 +83,44 @@ export const EQUIPMENT_MODELS: EquipmentModel[] = [
     brand: "Petrotec",
     name: "Progress 5000 HH",
     family: "Progress (retalho)",
-    summary: "Variante de mangueira suspensa (hanging hose) da gama Progress 5000.",
+    summary: "Versão de mangueira suspensa (hanging hose) do Progress 5000: mangueira mais comprida e melhor relação entre custo de manutenção por mangueira, proteção e acesso ao dispensador.",
     specs: [
-      { label: "Produtos", value: "até 4" },
-      { label: "Mangueiras", value: "até 8" },
+      { label: "Produtos", value: "até 4 grelhas (a mesma página também refere até 5)" },
+      { label: "Mangueiras", value: "até 8 (a mesma página também refere até 10)" },
       { label: "Caudal máximo", value: "130 L/min" },
+      { label: "Pagamento", value: "multimédia e pagamento disponíveis" },
     ],
-    sourceUrl: "https://www.petrotec.eu/products-and-services/dispensers/retail-line/p5000-hh.aspx",
-    sourceLabel: "petrotec.eu — P5000 HH",
+    sourceUrl: "https://www.petrotec.com/products/p5000-hh",
+    sourceLabel: "petrotec.com — Progress 5000 HH",
     products: ["gasoleo", "g95", "gasoleo_plus", "g98"],
   },
   {
     id: "p1000r",
     brand: "Petrotec",
-    name: "Progress 1000 R",
+    name: "Progress 1000 Retail",
     family: "Progress (retalho)",
-    summary: "Modelo de entrada da gama Progress.",
-    specs: [{ label: "Especificações", value: "a confirmar com a Petrotec" }],
-    products: ["gasoleo", "g95"],
+    summary: "Modelo de entrada da gama Progress para retalho, com a menor área ocupada da família e as mesmas tecnologias base dos modelos premium.",
+    specs: [
+      { label: "Produtos", value: "1 grelha de combustível" },
+      { label: "Mangueiras", value: "1 ou 2" },
+      { label: "Caudal", value: "até 130 L/min" },
+      { label: "Configuração", value: "mangueira normal ou braço aéreo" },
+    ],
+    sourceUrl: "https://www.petrotec.com/products/p1000-r",
+    sourceLabel: "petrotec.com — Progress 1000 Retail",
+    products: ["gasoleo"],
   },
   {
     id: "progress-lpg",
     brand: "Petrotec",
     name: "Progress LPG",
     family: "Progress (GPL)",
-    summary: "Dispensador de GPL Auto da gama Progress.",
-    specs: [{ label: "Especificações", value: "a confirmar com a Petrotec" }],
+    summary: "Gama de dispensadores de GPL Auto, com versões de ilha e de faixa, standalone e combo.",
+    specs: [
+      { label: "Mangueiras", value: "1 ou 2" },
+      { label: "Caudal", value: "até 60 L/min" },
+      { label: "Modelos", value: "Progress 5000 LPG (standalone e combo), Progress 2000 LPG (entrada, retalho), Progress 1500 LPG (industrial)" },
+    ],
     sourceUrl: "https://www.petrotec.com/products/progress-lpg",
     sourceLabel: "petrotec.com — Progress LPG",
     products: ["gpl"],
@@ -115,7 +130,7 @@ export const EQUIPMENT_MODELS: EquipmentModel[] = [
     brand: "Petrotec",
     name: "EURO 2000 VI",
     family: "EURO (geração anterior)",
-    summary: "Gama EURO de dispensadores; configurações construídas a partir de unidades de bombagem, medidores de volume e mangueiras.",
+    summary: "Gama EURO de dispensadores (geração anterior, já não listada no site da Petrotec); configurações construídas a partir de unidades de bombagem, medidores de volume e mangueiras.",
     specs: [
       { label: "Produtos", value: "até 4" },
       { label: "Mangueiras", value: "até 8" },

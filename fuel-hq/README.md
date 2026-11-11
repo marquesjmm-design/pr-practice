@@ -23,7 +23,7 @@ App móvel (Android) para a sede acompanhar uma rede de postos: vendas de combus
   - **Construtor de gráficos**: escolher métrica (22 indicadores), dimensão do eixo (tempo, posto, produto, região, tipologia, dia da semana, hora), desagregação em séries, filtros próprios, ordenação e nº de séries antes de agrupar em «Outros». Pré-visualização em tempo real.
   - Cada gráfico tem **vista de tabela** e vista **expandida**.
 - **Postos**: lista com indicadores dos últimos 30 dias, alertas de tanques e equipamentos; detalhe com níveis dos tanques, bombas e ocorrências.
-- **Equipamentos**: catálogo de modelos Petrotec (Progress 5000 LH/HH, Progress 1000 R, Progress LPG, EURO 2000 VI) com imagem, características e ligação à fonte; parque instalado com estado, disponibilidade a 90 dias, totalizador e manutenções em atraso.
+- **Equipamentos**: catálogo de modelos Petrotec (Progress 5000 LH/HH, Progress 1000 Retail, Progress LPG, EURO 2000 VI) com imagens oficiais, características e ligação à página do produto; parque instalado com estado, disponibilidade a 90 dias, totalizador e manutenções em atraso.
 - **Dados**: explicação do que é real/simulado, tabela de fontes dos preços, e **importação de CSV** (formato português) para criar gráficos com os seus próprios dados — por exemplo, exportações do portal de preços da DGEG.
 - Tema claro/escuro, interface em português, pensada para telemóvel (funciona também em tablet/desktop).
 
@@ -66,14 +66,19 @@ A app é construída com **Capacitor** (React + TypeScript dentro de um WebView 
 
 ## Imagens dos equipamentos Petrotec
 
-A app **não inclui fotografias da Petrotec**: são material com direitos de autor e não foi possível descarregá-las neste ambiente. Até as acrescentar, mostra ilustrações genéricas originais. Há duas formas de usar as imagens oficiais (obtenha-as junto da Petrotec ou confirme que a empresa tem direito a usá-las):
+A app inclui as **imagens oficiais** de quatro modelos, descarregadas de [petrotec.com](https://www.petrotec.com/product-category/fuel-dispensers) a 11/11/2026 e usadas com autorização da empresa. Estão em `public/equipment/` (WebP, ≈1000 px, 40–65 KB cada) e registadas em `public/equipment/manifest.json`:
 
-1. **Distribuídas com a app (recomendado):** copie os ficheiros para `fuel-hq/public/equipment/` e registe-os em `public/equipment/manifest.json`:
-   ```json
-   { "images": { "p5000-lh": "p5000-lh.jpg", "p5000-hh": "p5000-hh.jpg", "progress-lpg": "progress-lpg.png" } }
-   ```
-   Ids disponíveis: `p5000-lh`, `p5000-hh`, `p1000r`, `progress-lpg`, `euro2000-vi`.
-2. **No telemóvel:** em Equipamentos → modelo → «Alterar imagem do equipamento», tire/escolha uma fotografia ou indique um endereço `https://` da imagem. Fica guardado só nesse dispositivo.
+| Modelo (id) | Ficheiro | Origem |
+|---|---|---|
+| Progress 5000 LH (`p5000-lh`) | `p5000-lh.webp` | imagem do produto na página de dispensadores |
+| Progress 5000 HH (`p5000-hh`) | `p5000-hh.webp` | idem |
+| Progress 1000 Retail (`p1000r`) | `p1000r.webp` | idem |
+| Progress LPG (`progress-lpg`) | `progress-lpg.webp` | imagem do **Progress 2000 LPG**, usada pela Petrotec para a gama Progress LPG |
+| EURO 2000 VI (`euro2000-vi`) | — | modelo de geração anterior, já não listado no site; mostra uma ilustração genérica |
+
+Para trocar ou acrescentar imagens:
+1. **Para todos (distribuídas com a app):** coloque o ficheiro em `fuel-hq/public/equipment/` e associe-o ao id do modelo em `manifest.json` (campo `images`; o campo `captions` é opcional).
+2. **Só num telemóvel:** em Equipamentos → modelo → «Alterar imagem do equipamento», tire/escolha uma fotografia ou indique um endereço `https://`. Esta imagem tem prioridade sobre a oficial nesse dispositivo.
 
 ## Passar para produção
 

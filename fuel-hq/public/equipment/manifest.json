@@ -1,4 +1,13 @@
 {
-  "_instrucoes": "Coloque nesta pasta as imagens oficiais dos equipamentos (fornecidas pela Petrotec ou com autorização de uso) e associe cada ficheiro ao id do modelo. Ids disponíveis: p5000-lh, p5000-hh, p1000r, progress-lpg, euro2000-vi. Exemplo: \"p5000-lh\": \"p5000-lh.jpg\"",
-  "images": {}
+  "_instrucoes": "Imagens oficiais dos equipamentos, associadas ao id do modelo (p5000-lh, p5000-hh, p1000r, progress-lpg, euro2000-vi). Para acrescentar ou trocar uma imagem, coloque o ficheiro nesta pasta e registe-o em 'images'. 'captions' é opcional.",
+  "source": "Imagens de produto de https://www.petrotec.com (página de dispensadores), descarregadas a 11/11/2026, usadas com autorização da empresa.",
+  "images": {
+    "p5000-lh": "p5000-lh.webp",
+    "p5000-hh": "p5000-hh.webp",
+    "p1000r": "p1000r.webp",
+    "progress-lpg": "progress-lpg.webp"
+  },
+  "captions": {
+    "progress-lpg": "Imagem do modelo Progress 2000 LPG, da gama Progress LPG."
+  }
 }
