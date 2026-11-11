@@ -77,14 +77,19 @@ Modelos em `src/data/catalog.ts`. As características foram retiradas das págin
 
 | Modelo | Informação usada | Fonte |
 |---|---|---|
+| Axon 5000 | o mais personalizável da gama Axon; até 5 produtos / 12 mangueiras; caudais de 10, 40, 80 e 130 L/min (com asterisco no site); retração total ou parcial da mangueira; integração de OPT e multimédia | https://www.petrotec.com/products/axon-5000 |
+| Axon 4000 | versão em H da gama Axon, com dois formatos; OPT ou ecrã multimédia autónomo; integra sistemas de terceiros; ecrã tátil. **Nº de produtos/mangueiras não indicado** na página (um texto com «até 4 grelhas / 8 mangueiras» nessa página pertence ao cartão do P4000, da gama Progress) | https://www.petrotec.com/products/axon-4000 |
+| Axon 2000 | alto desempenho em pistas com pouco espaço; até 2 mangueiras e vários tipos de combustível (o texto «até 200 L/min» nessa página pertence ao cartão do P2000) | https://www.petrotec.com/products/axon-2000 |
+| Axon 1000 | modelo de entrada da gama Axon; 1 grelha com 1 ou 2 mangueiras (ou 2 produtos); até 130 L/min; caixa normal ou braço aéreo; aço inox 304 ou 316 | https://www.petrotec.com/products/axon-1000 |
+| Axon LPG | Axon 2000 LPG, Axon 5000 LPG standalone (1 ou 2 mangueiras, até 60 L/min) e Axon 5000 LPG combo | https://www.petrotec.com/products/axon-lpg |
 | Progress 5000 LH | até 5 grelhas de combustível e 10 mangueiras; até 130 L/min; combinável com GPL e AdBlue (com aquecimento); retração elástica da mangueira; todas as opções multimédia/pagamento | https://www.petrotec.com/products/p5000-lh |
 | Progress 5000 HH | versão de mangueira suspensa; até 4 grelhas, 8 mangueiras e 130 L/min (a mesma página também refere «até 5 grelhas e 10 mangueiras»: **inconsistência no site, confirmar com a Petrotec**) | https://www.petrotec.com/products/p5000-hh |
 | Progress 1000 Retail (P1000 R) | modelo de entrada da gama Progress para retalho; 1 grelha, 1 ou 2 mangueiras; até 130 L/min; mangueira normal ou braço aéreo | https://www.petrotec.com/products/p1000-r |
 | Progress LPG | gama de GPL (Progress 5000 LPG standalone e combo, Progress 2000 LPG, Progress 1500 LPG); 1 ou 2 mangueiras; até 60 L/min | https://www.petrotec.com/products/progress-lpg |
 | EURO 2000 VI | até 4 produtos e 8 mangueiras (geração anterior, não listada no site atual) | certificado UK-2780 (gov.uk): https://assets.publishing.service.gov.uk/media/5a7c141940f0b61a825d6506/UK-2780-revision-3.pdf |
 
-O site da Petrotec lista ainda outros dispensadores que **não** estão no catálogo da app (gama Axon 1000/2000/4000/5000 e Axon LPG; Progress P1000, P1500, P2000, P3000, P4000; Progress AdBlue; Eurotank AdBlue III). Podem ser acrescentados se fizerem parte do parque da empresa.
+O site da Petrotec lista ainda outros dispensadores que **não** estão no catálogo da app (Progress P1000, P1500, P2000, P3000, P4000; Progress AdBlue; Eurotank AdBlue III). Podem ser acrescentados se fizerem parte do parque da empresa.
 
-Números de série (prefixo `DEMO-`), datas de instalação, totalizadores, estados e ocorrências são **simulados**.
+Números de série (prefixo `DEMO-`), datas de instalação, totalizadores, estados e ocorrências são **simulados**. Na simulação, três postos foram «remodelados» com a gama Axon em 2024–2025 (A22 Portimão: Axon 4000/5000 e Axon LPG; Oeiras Marginal: Axon 5000/2000; Faro Centro: Axon 2000/1000), com taxa de avarias mais baixa do que os modelos mais antigos (pressuposto).
 
-**Imagens:** imagens oficiais de produto descarregadas de petrotec.com a 11/11/2026 e usadas com autorização da empresa (ver README, secção «Imagens dos equipamentos Petrotec»). A imagem da gama Progress LPG mostra o modelo Progress 2000 LPG. O EURO 2000 VI não tem imagem oficial no site atual e mostra uma ilustração genérica.
+**Imagens:** imagens oficiais de produto descarregadas de petrotec.com a 11/11/2026 e usadas com autorização da empresa (ver README, secção «Imagens dos equipamentos Petrotec»). A imagem da gama Progress LPG mostra o modelo Progress 2000 LPG e a da gama Axon LPG mostra o Axon 2000 LPG. O EURO 2000 VI não tem imagem oficial no site atual e mostra uma ilustração genérica.

@@ -86,21 +86,33 @@ const INCIDENT_KINDS = [
   "Calibração fora de tolerância",
 ];
 
+/** Postos remodelados recentemente com a gama Axon (pressuposto da simulação). */
+const AXON_PLAN: Partial<Record<string, (i: number) => string>> = {
+  portimao: (i) => (i < 2 ? "axon-4000" : "axon-5000"),
+  oeiras: (i) => (i < 2 ? "axon-5000" : "axon-2000"),
+  faro: (i) => (i < 2 ? "axon-2000" : "axon-1000"),
+};
+
 function dispenserPlan(st: Station): string[] {
   const n = st.type === "autoestrada" ? 6 : st.baseDailyL >= 9000 ? 5 : st.baseDailyL >= 6000 ? 4 : 3;
   const legacy = ["guimaraes", "setubal", "evora"].includes(st.id);
+  const axon = AXON_PLAN[st.id];
   const models: string[] = [];
   for (let i = 0; i < n; i++) {
-    if (st.type === "autoestrada") models.push(i < 2 ? "p5000-hh" : "p5000-lh");
+    if (axon) models.push(axon(i));
+    else if (st.type === "autoestrada") models.push(i < 2 ? "p5000-hh" : "p5000-lh");
     else if (legacy) models.push(i === 0 ? "p5000-lh" : "euro2000-vi");
     else if (st.baseDailyL < 7000) models.push(i < 2 ? "p5000-lh" : "p1000r");
     else models.push("p5000-lh");
   }
-  if (st.tanks.some((t) => t.product === "gpl")) models.push("progress-lpg");
+  if (st.tanks.some((t) => t.product === "gpl")) models.push(axon ? "axon-lpg" : "progress-lpg");
   return models;
 }
 
-const FAILURE_RATE: Record<string, number> = { "p5000-lh": 1 / 70, "p5000-hh": 1 / 65, p1000r: 1 / 50, "progress-lpg": 1 / 45, "euro2000-vi": 1 / 25 };
+const FAILURE_RATE: Record<string, number> = {
+  "p5000-lh": 1 / 70, "p5000-hh": 1 / 65, p1000r: 1 / 50, "progress-lpg": 1 / 45, "euro2000-vi": 1 / 25,
+  "axon-5000": 1 / 90, "axon-4000": 1 / 90, "axon-2000": 1 / 85, "axon-1000": 1 / 80, "axon-lpg": 1 / 60,
+};
 
 export function simulate(seed = 20261110): Dataset {
   const rand = mulberry32(seed);
@@ -119,7 +131,8 @@ export function simulate(seed = 20261110): Dataset {
     plan.forEach((modelId, pos) => {
       const model = EQUIPMENT_MODELS.find((m) => m.id === modelId)!;
       const legacy = modelId === "euro2000-vi";
-      const installYear = legacy ? 2012 + Math.floor(rand() * 4) : 2019 + Math.floor(rand() * 6);
+      const yearRoll = Math.floor(rand() * 6);
+      const installYear = legacy ? 2012 + (yearRoll % 4) : modelId.startsWith("axon") ? 2024 + (yearRoll % 2) : 2019 + yearRoll;
       const installedOn = `${installYear}-${String(1 + Math.floor(rand() * 12)).padStart(2, "0")}-${String(1 + Math.floor(rand() * 27)).padStart(2, "0")}`;
       const lastMaint = lastDay - Math.floor(rand() * 200);
       const id = `${st.id}-B${pos + 1}`;
@@ -135,9 +148,9 @@ export function simulate(seed = 20261110): Dataset {
         nextMaintenance: fromDay(lastMaint + 182),
         status: "operacional",
         totalizerL: 0,
-        hoses: modelId === "progress-lpg" ? 2 : Math.min(products.length * 2, modelId === "p5000-lh" ? 10 : 8),
+        hoses: Math.max(1, Math.min(products.length * 2, model.maxHoses)),
         products,
-        opt: modelId.startsWith("p5000") && rand() < 0.6,
+        opt: model.optCapable && rand() < 0.6,
       };
       const share = 1 / plan.length;
       const daysSince = lastDay - toDay(installedOn);

@@ -23,7 +23,7 @@ App móvel (Android) para a sede acompanhar uma rede de postos: vendas de combus
   - **Construtor de gráficos**: escolher métrica (22 indicadores), dimensão do eixo (tempo, posto, produto, região, tipologia, dia da semana, hora), desagregação em séries, filtros próprios, ordenação e nº de séries antes de agrupar em «Outros». Pré-visualização em tempo real.
   - Cada gráfico tem **vista de tabela** e vista **expandida**.
 - **Postos**: lista com indicadores dos últimos 30 dias, alertas de tanques e equipamentos; detalhe com níveis dos tanques, bombas e ocorrências.
-- **Equipamentos**: catálogo de modelos Petrotec (Progress 5000 LH/HH, Progress 1000 Retail, Progress LPG, EURO 2000 VI) com imagens oficiais, características e ligação à página do produto; parque instalado com estado, disponibilidade a 90 dias, totalizador e manutenções em atraso.
+- **Equipamentos**: catálogo de modelos Petrotec — gama **Axon** (5000, 4000, 2000, 1000, LPG), gama **Progress** (5000 LH, 5000 HH, 1000 Retail, LPG) e EURO 2000 VI — com imagens oficiais, características e ligação à página do produto; parque instalado com estado, disponibilidade a 90 dias, totalizador e manutenções em atraso.
 - **Dados**: explicação do que é real/simulado, tabela de fontes dos preços, e **importação de CSV** (formato português) para criar gráficos com os seus próprios dados — por exemplo, exportações do portal de preços da DGEG.
 - Tema claro/escuro, interface em português, pensada para telemóvel (funciona também em tablet/desktop).
 
@@ -66,11 +66,16 @@ A app é construída com **Capacitor** (React + TypeScript dentro de um WebView 
 
 ## Imagens dos equipamentos Petrotec
 
-A app inclui as **imagens oficiais** de quatro modelos, descarregadas de [petrotec.com](https://www.petrotec.com/product-category/fuel-dispensers) a 11/11/2026 e usadas com autorização da empresa. Estão em `public/equipment/` (WebP, ≈1000 px, 40–65 KB cada) e registadas em `public/equipment/manifest.json`:
+A app inclui as **imagens oficiais** de nove modelos, descarregadas de [petrotec.com](https://www.petrotec.com/product-category/fuel-dispensers) a 11/11/2026 e usadas com autorização da empresa. Estão em `public/equipment/` (WebP, ≈1000 px, 40–65 KB cada) e registadas em `public/equipment/manifest.json`:
 
 | Modelo (id) | Ficheiro | Origem |
 |---|---|---|
-| Progress 5000 LH (`p5000-lh`) | `p5000-lh.webp` | imagem do produto na página de dispensadores |
+| Axon 5000 (`axon-5000`) | `axon-5000.webp` | imagem do produto na página de dispensadores |
+| Axon 4000 (`axon-4000`) | `axon-4000.webp` | idem |
+| Axon 2000 (`axon-2000`) | `axon-2000.webp` | idem |
+| Axon 1000 (`axon-1000`) | `axon-1000.webp` | idem |
+| Axon LPG (`axon-lpg`) | `axon-lpg.webp` | imagem do **Axon 2000 LPG**, usada pela Petrotec para a gama Axon LPG |
+| Progress 5000 LH (`p5000-lh`) | `p5000-lh.webp` | idem |
 | Progress 5000 HH (`p5000-hh`) | `p5000-hh.webp` | idem |
 | Progress 1000 Retail (`p1000r`) | `p1000r.webp` | idem |
 | Progress LPG (`progress-lpg`) | `progress-lpg.webp` | imagem do **Progress 2000 LPG**, usada pela Petrotec para a gama Progress LPG |

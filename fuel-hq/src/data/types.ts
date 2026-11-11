@@ -49,6 +49,10 @@ export interface EquipmentModel {
   sourceUrl?: string;
   sourceLabel?: string;
   products: ProductId[];
+  /** Nº máximo de mangueiras usado pelo simulador (a partir da ficha oficial quando existe). */
+  maxHoses: number;
+  /** Pode ter OPT / terminal de pagamento integrado. */
+  optCapable: boolean;
 }
 
 export interface Incident {

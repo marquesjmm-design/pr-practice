@@ -52,7 +52,7 @@ export function EquipmentPage({ modelId }: { modelId?: string }) {
       <header className="topbar">
         <div style={{ flex: 1 }}>
           <h1>Equipamentos</h1>
-          <div className="sub">Dispensadores Petrotec instalados na rede</div>
+          <div className="sub">Dispensadores Petrotec (gamas Axon e Progress) instalados na rede</div>
         </div>
       </header>
       <main className="content stack">
